@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "156828722412",
+    "firebase_url": "https://fir-messaging-dojo.firebaseio.com",
+    "project_id": "fir-messaging-dojo",
+    "storage_bucket": "fir-messaging-dojo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:156828722412:android:eff42cf67c8a119b",
+        "android_client_info": {
+          "package_name": "br.com.gdgabc.firebasemessagingdojo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "156828722412-6mtqv2h0th5r8ljk1lukffvssg5g3ofi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.gdgabc.firebasemessagingdojo",
+            "certificate_hash": "38F73DD23C022D5E1A67E6105302CF359A833285"
+          }
+        },
+        {
+          "client_id": "156828722412-1mdg23inq5mbval9fjk3v9q6qjb9i0hf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0oOHF0QIdYumBodLn-B1xEZKKT_BSGSg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "156828722412-1mdg23inq5mbval9fjk3v9q6qjb9i0hf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
