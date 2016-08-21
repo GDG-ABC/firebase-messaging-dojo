@@ -15,6 +15,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GoogleAuthProvider;
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
 
@@ -22,6 +28,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private static final String LOG_TAG = LoginActivity.class.getCanonicalName();
 
     private GoogleApiClient mGoogleApiClient;
+    private FirebaseAuth mFirebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +38,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         setSupportActionBar(toolbar);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
 
+        mFirebaseAuth = FirebaseAuth.getInstance();
         // Build a GoogleApiClient with access to the Google Sign-In API and the
         // options specified by gso.
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -81,6 +90,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
+            firebaseAuthWithGoogle(acct);
             Toast.makeText(this, acct.getDisplayName(), Toast.LENGTH_LONG).show();
 //            mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
 //            updateUI(true);
@@ -90,5 +100,25 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             String messageError = result.getStatus().getStatusMessage();
             Toast.makeText(this, messageError, Toast.LENGTH_LONG).show();
         }
+    }
+
+    public void firebaseAuthWithGoogle(GoogleSignInAccount acct){
+        Log.d(LOG_TAG,"acct.getIdToken(): "+acct.getIdToken());
+        AuthCredential authCredential = GoogleAuthProvider.getCredential(acct.getIdToken(),null);
+        mFirebaseAuth.signInWithCredential(authCredential)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isComplete()) {
+                            startActivity(new Intent(LoginActivity.this, MessageActivity.class));
+                            finish();
+                        } else {
+                            Log.w(LOG_TAG, "SignIn Exception: " + task.getException());
+                            Toast.makeText(LoginActivity.this,
+                                    "Authentication failed.",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
     }
 }
